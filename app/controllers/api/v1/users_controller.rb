@@ -1,4 +1,10 @@
 class Api::V1::UsersController < ApplicationController
+    # GET /users
+    def index
+        @users = User.all
+        render json: @users
+    end
+
     # GET /users/:id
     def show
         @user = User.find(params[:id])
@@ -11,7 +17,7 @@ class Api::V1::UsersController < ApplicationController
         if @user.save
             render json: @user
         else
-            render error: { error: 'Unable to create user.' }, status: 400
+            render error: { error: "Unable to create user." }, status: 400
         end
     end
 
@@ -22,7 +28,7 @@ class Api::V1::UsersController < ApplicationController
             @user.update(user_params)
             render json: { message: "User successfully updated." }, status: 200
         else
-            render json: { error: "Unable to udpate user." }, status: 400
+            render error: { error: "Unable to udpate user." }, status: 400
         end
     end
 
@@ -31,9 +37,9 @@ class Api::V1::UsersController < ApplicationController
         @user = User.find(params[:id])
         if @user
             @user.destroy
-            render json: { message: "User successfully deleted." }, status: 200
-        else 
-            render json { error: "Unable to delete user." }, status: 400
+            render json: { message: 'User deleted!' }, status: 200
+        else
+            render error: { error: 'Unable to delete user.' }, status: 400
         end
     end
 

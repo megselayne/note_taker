@@ -29,7 +29,7 @@ class Api::V1::NotesController < ApplicationController
             @note.update(note_params)
             render json: { message: "Note successfully updated." }, status: 200
         else
-            render json: { error: "Unable to update note." }, status: 400
+            render error: { error: "Unable to update note." }, status: 400
         end
     end
 
@@ -39,7 +39,7 @@ class Api::V1::NotesController < ApplicationController
             @note.destroy
             render json: { message: 'Note successfully deleted.' }, status: 200
         else
-            render json: {error: "unable to delete note." }, status: 400
+            render error: {error: "unable to delete note." }, status: 400
         end
     end
 
