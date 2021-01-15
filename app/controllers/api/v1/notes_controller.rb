@@ -1,4 +1,5 @@
-class Api::V1::NotesController < ApplicationController
+class Api::V1::NotesController < ApiController
+    before_action :require_login
 
     # GET /notes Get user note titles: 
     # can I use .find_all here?
@@ -46,6 +47,6 @@ class Api::V1::NotesController < ApplicationController
     private
 
     def note_params
-        params.require(:user_id).permit(:user_id, :body, :title)
+        params.require(:note).permit(:user_id, :body, :title)
     end
 end

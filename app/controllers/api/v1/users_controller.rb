@@ -1,4 +1,6 @@
-class Api::V1::UsersController < ApplicationController
+class Api::V1::UsersController < ApiController
+    before_action :require_login, except: [:create]
+
     # GET /users
     def index
         @users = User.all
@@ -13,12 +15,17 @@ class Api::V1::UsersController < ApplicationController
 
     # POST /users
     def create
-        @user = User.new(user_params)
-        if @user.save
-            render json: @user
-        else
-            render error: { error: "Unable to create user." }, status: 400
-        end
+        @user = User.create!(user_params)
+        render json: { token: @user.auth_token }
+    end
+
+    def profile
+        @user = User.find_by!(auth_token: request.headers[:token])
+        @user_notes = Note.where(user_id: user.id)
+        render json: { 
+            user: { username: @user.username, email: @user.email },
+            notes: @user_notes,
+        }
     end
 
     # PUT /users/:id
@@ -46,6 +53,6 @@ class Api::V1::UsersController < ApplicationController
     private
 
     def user_params
-        params.require(:username, :email, :password_digest)
+        params.require(:user).permit(:username, :email, :password_digest)
     end
 end
