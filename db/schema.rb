@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2021_01_13_171215) do
     t.string "username"
     t.string "email"
     t.string "password_digest"
+    t.string "auth_token"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
